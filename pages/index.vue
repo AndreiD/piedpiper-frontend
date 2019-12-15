@@ -23,6 +23,11 @@
           <p class="body">
             Find upstackers around the world and have fun together
           </p>
+          <p class="caption">
+            if you get an error google maps can't load, it's not a bug. Someone
+            should put his/her credit card into a google project, whitelist this
+            domain, and we're good...
+          </p>
         </div>
       </v-flex>
     </v-layout>
