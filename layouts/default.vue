@@ -1,52 +1,63 @@
 <template>
   <v-app>
-    <v-app-bar
-      fixed
-      clipped-left
-      app
-      elevation="0"
-      color="rgba(0,0,0,0.8)"
-      dark
-    >
+    <v-app-bar fixed clipped-left app elevation="0" color="#FFF">
       <v-toolbar-title class="ml-0 pl-4">
         <nuxt-link style="text-decoration:none" to="/">
-          <v-icon class="pb-3" style="font-size: 1.6em; color:#dfdfdf" right
-            >map</v-icon
-          >
-          <span class="display-1" style="color:#dfdfdf">pied</span>
-          <span class="display-1" style="color:#ff5722">piper</span>
+          <img
+            justify="center"
+            align="center"
+            style="height: 64px;"
+            src="/upstacklogo.png"
+            alt="upstack logo"
+          />
         </nuxt-link>
       </v-toolbar-title>
       <div class="flex-grow-1"></div>
-      <v-btn @click="goToUrl('/')" class="ma-2" outlined>home</v-btn>
+      <v-btn @click="goToUrl('/')" class="ma-2" style="color: #555" outlined>
+        <v-icon left>home</v-icon>
+        home</v-btn
+      >
 
       <v-btn
         v-if="!isAuthenticated"
         @click="goToUrl('/signup')"
         class="ma-2 "
         outlined
-        >sign up</v-btn
+        style="color: #555"
+        ><v-icon left>account_circle</v-icon>sign up</v-btn
       >
       <v-btn
         v-if="!isAuthenticated"
         @click="goToUrl('/login')"
-        class="ma-2 secondary"
+        class="ma-2 secondary white--text"
         outlined
-        >sign in</v-btn
+        ><v-icon left>pets</v-icon>sign in</v-btn
       >
+
+      <v-btn
+        v-if="isAuthenticated"
+        @click="goToUrl('/messages')"
+        class="ma-2"
+        style="color: #555"
+        outlined
+        ><v-icon left>message</v-icon>messages</v-btn
+      >
+
+      <v-btn
+        v-if="isAuthenticated && $route.name != 'admin'"
+        @click="goToUrl('/admin')"
+        class="ma-2 primary white--text"
+        outlined
+        ><v-icon left>face</v-icon>admin</v-btn
+      >
+
       <v-btn
         v-if="isAuthenticated && $route.name == 'admin'"
         @click="goToUrl('/logout')"
         class="ma-2"
+        style="color: #555"
         outlined
-        >sign out</v-btn
-      >
-      <v-btn
-        v-if="isAuthenticated && $route.name != 'admin'"
-        @click="goToUrl('/admin')"
-        class="ma-2 secondary"
-        outlined
-        >admin</v-btn
+        ><v-icon left>remove_circle</v-icon>sign out</v-btn
       >
     </v-app-bar>
     <v-content>

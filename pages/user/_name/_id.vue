@@ -48,36 +48,28 @@
           </v-col>
 
           <v-col :cols="12">
-            <v-card style="min-height:300px" outlined>
+            <v-card v-if="chats" style="min-height:300px" outlined>
               <v-card-text>
-                <div v-for="chat in chats" :key="chat.id" style="max-width:80%">
-                  <p></p>
-                  <div
-                    v-if="chat.to_user_id != user._id"
-                    class="ma-3 left-bubble"
+                <template v-for="chat in chats">
+                  <v-list-item
+                    @click="goToUser(chat.from_user_name, chat.to_user_id)"
+                    :key="chat.message"
                   >
-                    <p class="msg-name">
-                      {{ chat.message }}
-                      <span class="caption">{{
-                        timeAgo(chat.created_at)
-                      }}</span>
-                    </p>
-                  </div>
+                    <v-list-item-avatar>
+                      <v-img :src="chat.from_user_pic"></v-img>
+                    </v-list-item-avatar>
 
-                  <div
-                    v-if="chat.to_user_id == user._id"
-                    class="ma-3 right-bubble"
-                  >
-                    <p class="msg-name">
-                      {{ chat.message }}
-                      <span class="caption">{{
-                        timeAgo(chat.created_at)
-                      }}</span>
-                    </p>
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-html="chat.message"
+                      ></v-list-item-title>
+                      <v-list-item-subtitle
+                        v-html="timeAgo(chat.created_at)"
+                      ></v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </template>
 
-                    <p class="caption"></p>
-                  </div>
-                </div>
                 <v-text-field
                   outlined
                   placeholder="Type Your Message"
@@ -126,7 +118,7 @@
 </template>
 <script>
 export default {
-  auth: false,
+  auth: true,
   data: () => ({
     user: null,
     showCallDialog: false,
@@ -238,6 +230,10 @@ export default {
       this.$axios
         .post("/user/chat", {
           to_user_id: this.user._id,
+          from_user_pic: this.user.pic_url,
+          to_user_pic: this.myUser.pic_url,
+          from_user_name: this.myUser.first_name + " " + this.myUser.last_name,
+          to_user_name: this.user.first_name + " " + this.user.last_name,
           message: this.message,
           metadata: this.user.first_name + this.user.last_name
         })

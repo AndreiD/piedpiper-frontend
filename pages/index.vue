@@ -1,33 +1,41 @@
 <template>
-  <v-container>
-    <section>
-      <v-layout column wrap class="my-12" align-center>
-        <v-flex xs12 sm4 class="my-4">
-          <div class="text-center">
-            <h2 class="display-3">
-              Find an upstacker
-              <span
-                style="background-color:rgba(0,0,0,0.8); padding: 2px 7px 2px 7px;color:#fff"
-                >near me</span
-              >
-            </h2>
-            <h3 class="mt-5">
-              an easy to use location based social network
-            </h3>
-          </div>
-        </v-flex>
-      </v-layout>
-    </section>
+  <section>
+    <v-layout column wrap align-center>
+      <v-flex xs12 sm4>
+        <div class="text-center">
+          <p class="display-1">
+            <span style="padding: 2px 7px 2px 7px;color:#555">Find an </span>
+
+            <img
+              justify="center"
+              align="center"
+              style="height: 54px;"
+              src="/upstacklogo.png"
+              alt="upstack logo"
+            />
+
+            <span
+              style="background-color:#4891dc; margin-left: -10px; padding: 1px 7px 0px 7px;color:#fff"
+              >er</span
+            >
+            <span style="padding: 2px 7px 2px 7px;color:#555">near me</span>
+          </p>
+          <p class="body">
+            Find upstackers around the world and have fun together
+          </p>
+        </div>
+      </v-flex>
+    </v-layout>
 
     <div v-if="!isLoading">
-      <v-container fluid class="pa-0 ma-0">
+      <v-container fluid class="pa-0 ma-0 fill-height">
         <GmapMap
           ref="mapRef"
-          :center="{ lat: 54.52, lng: 15.25 }"
+          :center="{ lat: 44.52, lng: 25.25 }"
           :zoom="5"
           map-type-id="roadmap"
           fullscreenControl="true"
-          style="width: 1200px; height: 1200px"
+          style="height: 100vh; width:100%"
         >
           <GmapInfoWindow
             v-if="selectedUser"
@@ -38,7 +46,9 @@
             <p class="title">{{ selectedUser.name }}</p>
             <p class="subtitle">{{ selectedUser.offers }}</p>
 
-            <v-btn small class="secondary" @click="goToUser()">chat</v-btn>
+            <v-btn small block class="secondary" @click="goToUser()"
+              >chat</v-btn
+            >
           </GmapInfoWindow>
 
           <GmapMarker
@@ -54,7 +64,7 @@
         </GmapMap>
       </v-container>
     </div>
-  </v-container>
+  </section>
 </template>
 
 <script>
@@ -66,10 +76,6 @@ export default {
       isLoading: true,
       users: [],
       selectedUser: null,
-      center: {
-        lat: 47.376332,
-        lng: 8.547511
-      },
       infoWindowPos: null,
       infoWinOpen: false,
       currentMidx: null,
@@ -132,8 +138,8 @@ export default {
               icon: {
                 url: user.pic_url,
                 scaledSize: {
-                  height: 32,
-                  width: 32
+                  height: 45,
+                  width: 45
                 }
               },
               infoText: user.first_name + " " + user.last_name

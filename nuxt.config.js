@@ -4,7 +4,7 @@ export default {
    ** Headers of the page
    */
   head: {
-    titleTemplate: "PiedPiper",
+    titleTemplate: "Upstacker Finder",
     title: process.env.npm_package_name || "",
     meta: [
       { charset: "utf-8" },
@@ -16,7 +16,7 @@ export default {
       }
     ],
     link: [
-      { rel: "icon", type: "image/x-icon", href: "/_nuxt/assets/icon.png" },
+      { rel: "icon", type: "image/x-icon", href: "/favicon.png" },
       {
         rel: "stylesheet",
         href:
@@ -49,7 +49,7 @@ export default {
     "@nuxtjs/toast",
     "@nuxtjs/auth",
     "@nuxtjs/vuetify",
-    ["@nuxtjs/pwa", { icon: false }],
+    ["@nuxtjs/pwa", { icon: false }]
   ],
   auth: {
     strategies: {

@@ -56,13 +56,6 @@
 
             <v-text-field
               outlined
-              v-model="address"
-              label="Address"
-              required
-            ></v-text-field>
-
-            <v-text-field
-              outlined
               v-model="city"
               label="City"
               required
@@ -81,6 +74,10 @@
               label="PIC URL (square works best)"
             ></v-text-field>
 
+            <v-btn block class="mt-3 mb-3" outlined @click="locateMe"
+              >Don't Know your lat/lng ? Click ME!</v-btn
+            >
+
             <v-text-field
               outlined
               v-model="lng"
@@ -96,12 +93,16 @@
             <v-textarea
               outlined
               v-model="paragraph"
+              :maxlength="1000"
+              counter
               label="Profile Description"
             ></v-textarea>
 
             <v-textarea
               outlined
               v-model="offers"
+              :maxlength="40"
+              counter
               label="Offers (ex: drinks, place to sleep etc)"
             ></v-textarea>
 
@@ -122,14 +123,18 @@ export default {
   data() {
     return {
       first_name: null,
+      location: null,
+      gettingLocation: false,
       last_name: null,
       phone: null,
       city: null,
-      address: null,
+      address: "undefined",
       country: null,
-      pic_url: null,
-      paragraph: null,
-      offers: null,
+      pic_url:
+        "https://media.glassdoor.com/sqll/2304831/upstack-squarelogo-1552547821116.png",
+      paragraph:
+        "provide a description what others might want to know about you",
+      offers: "drinks, disco, night-club & more",
       valid: true,
       password: null,
       lat: null,
@@ -177,6 +182,33 @@ export default {
           this.$toast.error(error.response.data.error);
           console.log(error);
         });
+    },
+    async getLocation() {
+      return new Promise((resolve, reject) => {
+        if (!("geolocation" in navigator)) {
+          reject(new Error("Geolocation is not available."));
+        }
+        navigator.geolocation.getCurrentPosition(
+          pos => {
+            resolve(pos);
+          },
+          err => {
+            reject(err);
+          }
+        );
+      });
+    },
+    async locateMe() {
+      this.gettingLocation = true;
+      try {
+        this.gettingLocation = false;
+        this.location = await this.getLocation();
+        this.lat = this.location.coords.latitude;
+        this.lng = this.location.coords.longitude;
+      } catch (e) {
+        this.gettingLocation = false;
+        console.log("e :", e);
+      }
     }
   }
 };

@@ -17,13 +17,13 @@
                     v-model="mUser.paragraph"
                     counter
                     :maxlength="1000"
-                    label="Describe your services here"
+                    label="What others will see about you"
                   ></v-textarea>
 
                   <v-text-field
                     outlined
                     v-model="mUser.offers"
-                    label="Offers"
+                    label="Offers (what you can offer to some other upstacker)"
                   ></v-text-field>
 
                   <v-text-field
@@ -99,13 +99,10 @@
                   label="Longitude"
                 ></v-text-field>
 
-                <v-btn
-                  @click="saveDetails()"
-                  :elevation="0"
-                  color="accent"
-                  min-width="220"
-                  >Change Profile Picture</v-btn
+                <v-btn @click="saveDetails()" :elevation="0" color="accent"
+                  >Save Location</v-btn
                 >
+                <v-btn outlined @click="locateMe">Autofill lat/lng ?</v-btn>
               </v-card-text>
             </v-card>
           </v-flex>
@@ -121,6 +118,10 @@ export default {
     user: null,
     imageLoading: false,
     mUser: null,
+    location: null,
+    lat: null,
+    lng: null,
+    gettingLocation: false,
     profilePic: null,
     isLoading: false
   }),
@@ -163,6 +164,33 @@ export default {
           this.$toast.error(error.response.data.error);
           console.log(error);
         });
+    },
+    async getLocation() {
+      return new Promise((resolve, reject) => {
+        if (!("geolocation" in navigator)) {
+          reject(new Error("Geolocation is not available."));
+        }
+        navigator.geolocation.getCurrentPosition(
+          pos => {
+            resolve(pos);
+          },
+          err => {
+            reject(err);
+          }
+        );
+      });
+    },
+    async locateMe() {
+      this.gettingLocation = true;
+      try {
+        this.gettingLocation = false;
+        this.location = await this.getLocation();
+        this.mUser.location.lat = this.location.coords.latitude;
+        this.mUser.location.lng = this.location.coords.longitude;
+      } catch (e) {
+        this.gettingLocation = false;
+        console.log("e :", e);
+      }
     }
   }
 };

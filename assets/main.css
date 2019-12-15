@@ -1,6 +1,6 @@
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 .page-enter-active,
@@ -36,6 +36,10 @@ tr:hover {
 
 .v-application a {
   color: #cfd8dc;
+}
+
+.v-application {
+  color: #555 !important;
 }
 
 [v-cloak] > * {
