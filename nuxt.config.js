@@ -35,7 +35,11 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["~/plugins/axios", "~/plugins/filters"],
+  plugins: [
+    "~/plugins/axios",
+    "~/plugins/filters",
+    { src: "~/plugins/google-maps", ssr: true }
+  ],
   /*
    ** Nuxt.js modules
    */
@@ -46,12 +50,6 @@ export default {
     "@nuxtjs/auth",
     "@nuxtjs/vuetify",
     ["@nuxtjs/pwa", { icon: false }],
-    [
-      "nuxt-gmaps",
-      {
-        key: "AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"
-      }
-    ]
   ],
   auth: {
     strategies: {
@@ -105,6 +103,7 @@ export default {
     }
   },
   build: {
+    transpile: [/^vue2-google-maps($|\/)/],
     /*
      ** You can extend webpack config here
      */

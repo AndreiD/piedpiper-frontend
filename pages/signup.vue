@@ -6,7 +6,10 @@
           <div class="text-center">
             <h2 class="display-3">
               sign
-              <span style="background-color:black; padding: 2px 7px 2px 7px;color:#fff">UP</span>
+              <span
+                style="background-color:black; padding: 2px 7px 2px 7px;color:#fff"
+                >UP</span
+              >
             </h2>
           </div>
         </v-flex>
@@ -14,32 +17,97 @@
 
       <v-layout align-center justify-center>
         <v-flex xs12 sm8 md6 ma-5 style="max-width:500px">
-          <v-form ref="form" v-model="valid">
+          <v-form ref="form">
             <v-text-field
-              v-model="nickname"
+              v-model="first_name"
               outlined
-              :rules="nicknameRules"
-              label="Nickname"
+              label="First Name"
               required
             ></v-text-field>
 
-            <v-text-field outlined v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+            <v-text-field
+              v-model="last_name"
+              outlined
+              label="Last Name"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              v-model="phone"
+              outlined
+              label="Phone"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              outlined
+              v-model="email"
+              label="E-mail"
+              required
+            ></v-text-field>
 
             <v-text-field
               outlined
               v-model="password"
-              :rules="passwordRules"
+              type="password"
               label="Password"
               required
             ></v-text-field>
 
-            <v-btn
-              style="min-width:120px"
-              :loading="isLoading"
+            <v-text-field
               outlined
-              color="primary"
-              @click="signup"
-            >SIGN UP</v-btn>
+              v-model="address"
+              label="Address"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              outlined
+              v-model="city"
+              label="City"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              outlined
+              v-model="country"
+              label="Country"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              outlined
+              v-model="pic_url"
+              label="PIC URL (square works best)"
+            ></v-text-field>
+
+            <v-text-field
+              outlined
+              v-model="lng"
+              label="Latitude"
+            ></v-text-field>
+
+            <v-text-field
+              outlined
+              v-model="lat"
+              label="Longitude"
+            ></v-text-field>
+
+            <v-textarea
+              outlined
+              v-model="paragraph"
+              label="Profile Description"
+            ></v-textarea>
+
+            <v-textarea
+              outlined
+              v-model="offers"
+              label="Offers (ex: drinks, place to sleep etc)"
+            ></v-textarea>
+
+            <v-btn :loading="isLoading" color="primary" block @click="signup"
+              >SIGN UP</v-btn
+            >
           </v-form>
         </v-flex>
       </v-layout>
@@ -48,51 +116,66 @@
 </template>
 
 <script>
+import { getSHA512 } from "../static/hashing";
 export default {
+  auth: false,
   data() {
     return {
+      first_name: null,
+      last_name: null,
+      phone: null,
+      city: null,
+      address: null,
+      country: null,
+      pic_url: null,
+      paragraph: null,
+      offers: null,
       valid: true,
       password: null,
+      lat: null,
+      lng: null,
       isLoading: false,
       passwordRepeat: null,
-      nickname: "",
-      nicknameRules: [
-        v =>
-          (v && v.length >= 3) || "Nickname must be greater than 3 characters"
-      ],
-      passwordRules: [
-        v =>
-          (v && v.length >= 5) || "Password must be greater than 5 characters"
-      ],
-      email: "",
-      emailRules: [
-        v => !!v || "E-mail is required",
-        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
-      ]
+      email: ""
     };
   },
   mounted() {
     this.search = "";
   },
   methods: {
-    async signup() {
-      this.isLoading = true;
+    signup() {
+      const self = this;
+      self.isLoading = true;
 
-      await this.$axios
-        .post("/user/register", {
-          email: this.email,
-          password: this.password,
-          nickname: this.nickname
-        })
+      var register = {
+        first_name: this.first_name,
+        last_name: this.last_name,
+        phone: this.phone,
+        email: this.email,
+        password: getSHA512(this.password),
+        address: this.address,
+        city: this.city,
+        pic_url: this.pic_url,
+        location: {
+          lat: String(this.lat),
+          lng: String(this.lng)
+        },
+        paragraph: this.paragraph,
+        offers: this.offers,
+        country: this.country
+      };
+
+      this.$axios
+        .post("/register", register)
         .then(response => {
           console.log(response.status);
-          this.$toast.success("Registration successfully.");
-          this.$router.push("/signin");
+          this.$toast.success("All right! Success!!!");
+          self.isLoading = false;
         })
         .catch(error => {
           self.isLoading = false;
+          this.$toast.error(error.response.data.error);
           console.log(error);
-          this.$toast.error(error);
         });
     }
   }

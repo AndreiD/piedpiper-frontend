@@ -14,16 +14,18 @@
             >map</v-icon
           >
           <span class="display-1" style="color:#dfdfdf">pied</span>
-          <span class="display-1" style="color:#cc3333">piper</span>
+          <span class="display-1" style="color:#ff5722">piper</span>
         </nuxt-link>
       </v-toolbar-title>
       <div class="flex-grow-1"></div>
       <v-btn @click="goToUrl('/')" class="ma-2" outlined>home</v-btn>
+
+      <v-btn @click="goToUrl('/signup')" class="ma-2 " outlined>sign up</v-btn>
       <v-btn
         v-if="!isAuthenticated"
         @click="goToUrl('/login')"
         class="ma-2 secondary"
-        text
+        outlined
         >sign in</v-btn
       >
       <v-btn

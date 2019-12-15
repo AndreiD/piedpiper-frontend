@@ -8,7 +8,7 @@
               <v-list-item three-line>
                 <v-list-item-content>
                   <div class="overline mb-4">
-                    {{ user.type }} - {{ user.company }}
+                    {{ user.city }} - {{ user.country }}
                   </div>
                   <v-list-item-title class="headline mb-1"
                     >{{ user.first_name }}
@@ -17,12 +17,16 @@
                   <v-list-item-subtitle>{{
                     user.paragraph | truncate(2000, "...")
                   }}</v-list-item-subtitle>
+
+                  <v-list-item-subtitle class="headline">{{
+                    user.offers | truncate(2000, "...")
+                  }}</v-list-item-subtitle>
                 </v-list-item-content>
 
-                <v-list-item-avatar size="125" color="grey">
+                <v-list-item-avatar size="256" tile color="grey">
                   <img
                     v-bind:src="user.pic_url"
-                    class="img-circle"
+                    style=" object-fit: cover;"
                     v-bind:alt="user.last_name"
                   />
                 </v-list-item-avatar>
@@ -38,84 +42,51 @@
                   <v-icon left>mdi-phone</v-icon>call
                 </v-btn>
 
-                <v-btn
-                  @click="showMessageDialog = !showMessageDialog"
-                  :elevation="0"
-                  color="primary"
-                  min-width="220"
-                >
-                  <v-icon left>mdi-email</v-icon>message
-                </v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
           </v-col>
 
-          <v-col :cols="6">
+          <v-col :cols="12">
             <v-card style="min-height:300px" outlined>
               <v-card-text>
-                <p class="title mb-4"><v-icon left>build</v-icon>Expertise</p>
-
-                <v-chip
-                  color="rgba(0, 0, 0, 0.47)"
-                  class="white--text mr-1"
-                  v-for="exp in user.expertise"
-                  :key="exp"
-                  >{{ exp }}</v-chip
-                >
-
-                <p class="title mb-4 mt-5">
-                  <v-icon left>favorite</v-icon>Perks
-                </p>
-
-                <p class="subtitle">
-                  <span
-                    color="rgba(0, 0, 0, 0.47)"
-                    v-for="perk in user.perks"
-                    :key="perk"
+                <div v-for="chat in chats" :key="chat.id" style="max-width:80%">
+                  <p></p>
+                  <div
+                    v-if="chat.to_user_id != user._id"
+                    class="ma-3 left-bubble"
                   >
-                    <v-icon>check</v-icon>
-                    {{ perk }}
-                  </span>
-                </p>
+                    <p class="msg-name">
+                      {{ chat.message }}
+                      <span class="caption">{{
+                        timeAgo(chat.created_at)
+                      }}</span>
+                    </p>
+                  </div>
 
-                <p v-if="user.fee" class="mt-5 subtitle">
-                  <span color="rgba(0, 0, 0, 0.47)"
-                    >Approximate Rate: {{ user.fee }}
-                    {{ user.fee_currency }} per hour</span
+                  <div
+                    v-if="chat.to_user_id == user._id"
+                    class="ma-3 right-bubble"
                   >
-                </p>
-              </v-card-text>
-            </v-card>
-          </v-col>
+                    <p class="msg-name">
+                      {{ chat.message }}
+                      <span class="caption">{{
+                        timeAgo(chat.created_at)
+                      }}</span>
+                    </p>
 
-          <v-col :cols="6">
-            <v-card style="min-height:300px" outlined>
-              <v-card-text>
-                <p class="title mb-4">
-                  <v-icon left>translate</v-icon>Languages
-                </p>
-
-                <v-chip
-                  color="rgba(0, 0, 0, 0.47)"
-                  class="white--text mr-1"
-                  v-for="lang in user.languages"
-                  :key="lang"
-                  >{{ lang }}</v-chip
+                    <p class="caption"></p>
+                  </div>
+                </div>
+                <v-text-field
+                  outlined
+                  placeholder="Type Your Message"
+                  v-model="message"
+                  ref="message"
                 >
-
-                <p class="title mb-4 mt-4">
-                  <v-icon left>access_time</v-icon>Office Hours
-                </p>
-
-                <span color="rgba(0, 0, 0, 0.47)" class="mr-1"
-                  >9:00 - 17:00</span
-                >
-
-                <p class="title mt-5 mb-4"><v-icon left>map</v-icon>Address</p>
-
-                <span color="rgba(0, 0, 0, 0.47)" class="mr-1"
-                  >{{ user.address }}, {{ user.city | title }}</span
+                </v-text-field>
+                <v-btn class="primary" @click="sendMessage()"
+                  >SEND MESSAGE</v-btn
                 >
               </v-card-text>
             </v-card>
@@ -150,86 +121,6 @@
           </v-card>
         </v-dialog>
       </div>
-
-      <!-- DIALOG MESSAGE CONTACT -->
-      <v-row justify="center">
-        <v-dialog max-width="700" v-if="user" v-model="showMessageDialog">
-          <v-card class="text-center">
-            <v-card-title class="text-center" primary-title>
-              <v-icon left>mdi-email</v-icon>E-mail Contact
-            </v-card-title>
-
-            <v-card-text class="mt-5 text-center">
-              <v-form>
-                <v-text-field
-                  outlined
-                  v-model="messagePayload.first_name"
-                  type="text"
-                  label="Fist Name"
-                  flat
-                />
-                <v-text-field
-                  outlined
-                  v-model="messagePayload.last_name"
-                  type="text"
-                  label="Last Name"
-                  flat
-                />
-                <v-text-field
-                  outlined
-                  v-model="messagePayload.phone"
-                  type="phone"
-                  label="Phone"
-                  flat
-                />
-                <v-text-field
-                  outlined
-                  v-model="messagePayload.email"
-                  type="email"
-                  label="Email"
-                  flat
-                />
-
-                <v-textarea
-                  v-model="messagePayload.message"
-                  outlined
-                  counter
-                  :maxlength="1000"
-                  label="Please describe your need/case"
-                ></v-textarea>
-                <v-checkbox
-                  v-model="checkbox1"
-                  checked="false"
-                  color="success"
-                  label="By ticking this box you agree to our Terms and Privacy."
-                ></v-checkbox>
-
-                <v-checkbox
-                  checked="false"
-                  v-model="checkbox2"
-                  color="success"
-                  label="By ticking this box you agree to us collecting the necessary information to process your request."
-                ></v-checkbox>
-
-                <v-btn
-                  @click="sendMessage()"
-                  block
-                  class="primary"
-                  :loading="isLoading"
-                  >SEND MESSAGE</v-btn
-                >
-              </v-form>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" text @click="showMessageDialog = false"
-                >CLOSE</v-btn
-              >
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-row>
     </v-flex>
   </v-layout>
 </template>
@@ -238,44 +129,20 @@ export default {
   auth: false,
   data: () => ({
     user: null,
-    showMessageDialog: false,
     showCallDialog: false,
+    message: "",
+    myUser: null,
     name: null,
     id: null,
-    checkbox1: true, //TODO: CHANGE THEM TO FALSE
-    checkbox2: true, //TODO: CHANGE THEM TO FALSE
-    messagePayload: {
-      recipient: "",
-      first_name: "first name",
-      last_name: "last name",
-      email: "email@me.com",
-      phone: "+3598899038892",
-      message: "this is a long message....xyz",
-      recaptcha_token: "changeme"
-    },
     isLoading: false,
-    cards: [
-      {
-        title: "Pre-fab homes",
-        src: "https://cdn.vuetifyjs.com/images/cards/house.jpg",
-        flex: 12
-      },
-      {
-        title: "Favorite road trips",
-        src: "https://cdn.vuetifyjs.com/images/cards/road.jpg",
-        flex: 6
-      },
-      {
-        title: "Best airlines",
-        src: "https://cdn.vuetifyjs.com/images/cards/plane.jpg",
-        flex: 6
-      }
-    ]
+    chats: []
   }),
   mounted() {
     this.name = this.$route.params.name;
     this.id = this.$route.params.id;
+    this.getMyInfo();
     this.loadUser(this.id);
+    this.loadChat(this.id);
   },
   computed: {
     mapsIframeURL: function() {
@@ -286,13 +153,43 @@ export default {
     }
   },
   methods: {
-    loadUser(userID) {
-      console.log("loading userID :", userID);
+    getMyInfo() {
+      this.$axios
+        .get("/user/me")
+        .then(res => {
+          this.myUser = res.data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.isLoading = false;
+          this.flash(error, "error");
+        });
+    },
+    loadChat() {
       this.isLoading = true;
       this.$axios
-        .get("/u/" + userID)
+        .get("/user/chats?page=1&limit=100")
         .then(response => {
-          console.log("response :", response);
+          this.isLoading = false;
+          let data = response["data"];
+          if (data == null) {
+            console.log("no results found!");
+            return;
+          }
+          this.chats = data;
+          this.chats = this.chats.reverse();
+        })
+        .catch(error => {
+          this.isLoading = false;
+          console.log(error);
+          this.$toast.error(error.response.data.error);
+        });
+    },
+    loadUser() {
+      this.isLoading = true;
+      this.$axios
+        .get("/u/" + this.id)
+        .then(response => {
           this.isLoading = false;
           let data = response["data"];
           if (data == null) {
@@ -308,47 +205,33 @@ export default {
         });
     },
     sendMessage() {
-      if (this.messagePayload.message.length > 1000) {
+      if (this.message.length > 1000) {
         this.$toast.error("maximum 1000 characters allowed");
         return;
       }
-      if (this.messagePayload.first_name.length < 2) {
-        this.$toast.error("please fill the first name");
+      if (this.message.length < 1) {
+        this.$toast.error("what's your message?");
         return;
       }
-      if (this.messagePayload.last_name.length < 2) {
-        this.$toast.error("please fill the last name");
-        return;
+
+      if (this.user._id == this.myUser._id) {
+        this.$toast.info("did you just try to talk with yourself ?");
       }
-      if (this.messagePayload.phone.length < 2) {
-        this.$toast.error("please fill your phone");
-        return;
-      }
-      if (this.messagePayload.email.length < 2) {
-        this.$toast.error("please fill your email");
-        return;
-      }
-      if (this.messagePayload.message.length < 2) {
-        this.$toast.error("please write your message");
-        return;
-      }
-      if (this.checkbox1 != true || this.checkbox2 != true) {
-        this.$toast.error(
-          "you have to accept our terms if you want to send the message"
-        );
-        return;
-      }
+
       this.isLoading = true;
-      console.log("this.user :", this.user);
-      this.messagePayload.recipient = this.user._id;
       const self = this;
       this.$axios
-        .post("/message", this.messagePayload)
+        .post("/user/chat", {
+          to_user_id: this.user._id,
+          message: this.message,
+          metadata: this.user.first_name + this.user.last_name
+        })
         .then(response => {
           console.log(response.status);
-          self.showMessageDialog = false;
           this.$toast.success("Message Sent!");
           self.isLoading = false;
+          this.message = "";
+          this.loadChat(this.id);
         })
         .catch(error => {
           self.isLoading = false;
@@ -363,8 +246,184 @@ export default {
       return phone
         .replace(/[^0-9]/g, "")
         .replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+    },
+    getFormattedDate(date, prefomattedDate = false, hideYear = false) {
+      const MONTH_NAMES = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ];
+      const day = date.getDate();
+      const month = MONTH_NAMES[date.getMonth()];
+      const year = date.getFullYear();
+      var hours = date.getHours();
+      let minutes = date.getMinutes();
+      var ampm = hours >= 12 ? "pm" : "am";
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      if (minutes < 10) {
+        // Adding leading zero to minutes
+        minutes = `0${minutes}`;
+      }
+      if (prefomattedDate) {
+        // Today at 10:20
+        // Yesterday at 10:20
+        return `${prefomattedDate} at ${hours}:${minutes} ${ampm}`;
+      }
+      if (hideYear) {
+        // 10. January at 10:20
+        return `${day}. ${month} at ${hours}:${minutes} ${ampm}`;
+      }
+      // 10. January 2017. at 10:20
+      return `${day}. ${month} ${year}. at ${hours}:${minutes} ${ampm}`;
+    },
+    timeAgo(dateParam) {
+      if (!dateParam) {
+        return null;
+      }
+      const date =
+        typeof dateParam === "object" ? dateParam : new Date(dateParam * 1000);
+      const DAY_IN_MS = 86400000; // 24 * 60 * 60 * 1000
+      const today = new Date();
+      const yesterday = new Date(today - DAY_IN_MS);
+      const seconds = Math.round((today - date) / 1000);
+      const minutes = Math.round(seconds / 60);
+      const isToday = today.toDateString() === date.toDateString();
+      const isYesterday = yesterday.toDateString() === date.toDateString();
+      const isThisYear = today.getFullYear() === date.getFullYear();
+      if (seconds < 5) {
+        return "now";
+      } else if (seconds < 60) {
+        return `${seconds} seconds ago`;
+      } else if (seconds < 90) {
+        return "about a minute ago";
+      } else if (minutes < 60) {
+        return `${minutes} minutes ago`;
+      } else if (isToday) {
+        return this.getFormattedDate(date, "Today"); // Today at 10:20
+      } else if (isYesterday) {
+        return this.getFormattedDate(date, "Yesterday"); // Yesterday at 10:20
+      } else if (isThisYear) {
+        return this.getFormattedDate(date, false, true); // 10. January at 10:20
+      }
+      return this.getFormattedDate(date); // 10. January 2017. at 10:20
     }
   }
 };
 </script>
-./star
+<style scoped>
+.chat-box {
+  height: 500px;
+  width: 100%;
+  overflow: scroll;
+}
+.chat-item {
+  border: none;
+}
+.chat-status {
+  min-height: 49px;
+}
+.chat-status .chat-date {
+  display: block;
+  font-size: 10px;
+  font-style: italic;
+  color: #999;
+  height: 15px;
+  left: 10%;
+  right: 10%;
+}
+.chat-status .chat-content-center {
+  padding: 5px 10px;
+  background-color: #e1e1f7;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #555;
+  height: 34px;
+  left: 10%;
+  right: 10%;
+}
+.right-bubble {
+  position: relative;
+  background: #dcf8c6;
+  border-top-left-radius: 0.4em;
+  border-bottom-left-radius: 0.4em;
+  border-bottom-right-radius: 0.4em;
+  padding: 5px 10px 10px;
+  left: 15%;
+}
+.right-bubble span.msg-name {
+  font-size: 12px;
+  font-weight: bold;
+  color: green;
+  display: block;
+}
+.right-bubble span.msg-date {
+  font-size: 10px;
+  display: block;
+}
+.right-bubble:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border: 27px solid transparent;
+  border-left-color: #dcf8c6;
+  border-right: 0;
+  border-top: 0;
+  margin-top: -0.5px;
+  margin-right: -27px;
+}
+.left-bubble {
+  position: relative;
+  background: #efefef;
+  border-top-right-radius: 0.4em;
+  border-bottom-left-radius: 0.4em;
+  border-bottom-right-radius: 0.4em;
+  padding: 5px 10px 10px;
+  left: 5%;
+}
+.left-bubble span.msg-name {
+  font-size: 12px;
+  font-weight: bold;
+  color: blue;
+  display: block;
+}
+.left-bubble span.msg-date {
+  font-size: 10px;
+  display: block;
+}
+.left-bubble:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border: 27px solid transparent;
+  border-right-color: #efefef;
+  border-left: 0;
+  border-top: 0;
+  margin-top: -0.5px;
+  margin-left: -27px;
+}
+footer.sticky-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  background-color: #ffffff;
+  border-top: solid 1px #efefef;
+}
+</style>

@@ -70,7 +70,7 @@
                 <v-text-field
                   outlined
                   v-model="mUser.pic_url"
-                  label="Pic URL"
+                  label="Pic URL (best if it's square)"
                 ></v-text-field>
 
                 <v-btn
