@@ -20,7 +20,13 @@
       <div class="flex-grow-1"></div>
       <v-btn @click="goToUrl('/')" class="ma-2" outlined>home</v-btn>
 
-      <v-btn @click="goToUrl('/signup')" class="ma-2 " outlined>sign up</v-btn>
+      <v-btn
+        v-if="!isAuthenticated"
+        @click="goToUrl('/signup')"
+        class="ma-2 "
+        outlined
+        >sign up</v-btn
+      >
       <v-btn
         v-if="!isAuthenticated"
         @click="goToUrl('/login')"
