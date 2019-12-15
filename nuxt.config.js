@@ -98,8 +98,8 @@ export default {
    */
   pwa: {
     manifest: {
-      name: "findlaywer.bg",
-      lang: "bg"
+      name: "hack.to.wtf",
+      lang: "en"
     }
   },
   build: {
