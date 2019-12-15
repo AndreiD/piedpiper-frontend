@@ -1,101 +1,113 @@
-import colors from 'vuetify/es5/util/colors'
-
 export default {
-  mode: 'spa',
+  mode: "spa",
   /*
-  ** Headers of the page
-  */
+   ** Headers of the page
+   */
   head: {
-    titleTemplate: 'to WTF',
-    title: 'to WTF',
+    titleTemplate: "PiedPiper",
+    title: process.env.npm_package_name || "",
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'toWTF' }
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      {
+        hid: "description",
+        name: "description",
+        content: process.env.npm_package_description || ""
+      }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: "icon", type: "image/x-icon", href: "/_nuxt/assets/icon.png" },
       {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
+        rel: "stylesheet",
+        href:
+          "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"
       }
     ]
   },
   /*
-  ** Customize the progress-bar color
-  */
-  loading: { color: '#fff' },
+   ** Customize the progress-bar color
+   */
+  loading: { color: "#000" },
   /*
-  ** Global CSS
-  */
-  css: [
-  ],
+   ** Global CSS
+   */
+  css: ["~/assets/main.css"],
   /*
-  ** Plugins to load before mounting the App
-  */
-  plugins: [
-  ],
+   ** Plugins to load before mounting the App
+   */
+  plugins: ["~/plugins/axios", "~/plugins/filters"],
   /*
-  ** Nuxt.js dev-modules
-  */
-  buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
-    '@nuxtjs/vuetify'
-  ],
-  /*
-  ** Nuxt.js modules
-  */
+   ** Nuxt.js modules
+   */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/toast',
-    '@nuxtjs/auth'
+    "@nuxtjs/axios",
+    "@nuxtjs/eslint-module",
+    "@nuxtjs/toast",
+    "@nuxtjs/auth",
+    "@nuxtjs/vuetify",
+    ["@nuxtjs/pwa", { icon: false }],
+    [
+      "nuxt-gmaps",
+      {
+        key: "AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"
+      }
+    ]
   ],
-  toast: {
-    position: 'top-right',
-    duration: 3000,
-  },
   auth: {
     strategies: {
       local: {
         endpoints: {
-          login: { url: '/user/login', method: 'post', propertyName: 'token' },
-          user: { url: '/user/me', method: 'get', propertyName: 'nickname' }
+          login: { url: "/login", method: "post", propertyName: "token" },
+          logout: { url: "/logout", method: "get" },
+          user: { url: "/user/me", method: "get", propertyName: "email" }
         },
         tokenRequired: true,
-        tokenType: 'Token'
+        tokenType: "Token"
+      },
+      redirect: {
+        login: "/login",
+        logout: "/login",
+        callback: "/login",
+        home: "/"
       }
     }
   },
+  router: {
+    middleware: ["auth"]
+  },
+  toast: {
+    position: "top-right",
+    duration: 3000
+  },
   /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
+   ** Axios module configuration
+   ** See https://axios.nuxtjs.org/options
+   */
   axios: {
-    baseURL: "http://localhost:5555/api",
+    baseURL: "https://api.to.wtf",
     retries: 3
   },
   /*
-  ** vuetify module configuration
-  ** https://github.com/nuxt-community/vuetify-module
-  */
+   ** vuetify module configuration
+   ** https://github.com/nuxt-community/vuetify-module
+   */
   vuetify: {
     customVariables: ["~/assets/variables.scss"],
-    optionsPath: "./vuetify.options.js",
-    treeShake: true,
-    defaultAssets: {
-      font: false
-    }
+    optionsPath: "./vuetify.options.js"
   },
   /*
-  ** Build configuration
-  */
+   ** Build configuration
+   */
+  pwa: {
+    manifest: {
+      name: "findlaywer.bg",
+      lang: "bg"
+    }
+  },
   build: {
     /*
-    ** You can extend webpack config here
-    */
-    extend(config, ctx) {
-    }
+     ** You can extend webpack config here
+     */
+    extend(config, ctx) {}
   }
-}
+};

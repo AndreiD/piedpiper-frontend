@@ -1,4 +1,3 @@
-
 <template>
   <v-app style="background: #12171a;">
     <template v-if="error.statusCode === 404">
@@ -6,7 +5,7 @@
         <v-layout align-center justify-center>
           <div class="text-md-center">
             <h1>404</h1>
-            <h2 class="my-3 headline">Sorry, page not found</h2>
+            <h2 class="white--text my-3 headline">Sorry, page not found</h2>
             <div>
               <v-btn color="primary" @click="goHome">Go Home</v-btn>
             </div>
@@ -22,7 +21,7 @@
           </div>
           <div class="text-md-center">
             <h1>403</h1>
-            <h2 class="my-3 headline">Sorry, access denied.</h2>
+            <h2 class="white--text my-3 headline">Sorry, access denied.</h2>
             <div>
               <v-btn color="primary" @click="goHome">Go Home</v-btn>
             </div>
@@ -38,7 +37,7 @@
           </div>
           <div class="text-md-center">
             <h1>500</h1>
-            <h2 class="my-3 headline">Fatal Error Encountered!</h2>
+            <h2 class="white--text my-3 headline">Fatal Error Encountered!</h2>
             <div>
               <v-btn color="primary" @click="goHome">Go Home</v-btn>
             </div>
@@ -66,7 +65,7 @@ h1 {
   font-size: 150px;
   line-height: 150px;
   font-weight: 700;
-  color: #252932;
+  color: #dedede;
   text-shadow: rgba(61, 61, 61, 0.3) 1px 1px, rgba(61, 61, 61, 0.2) 2px 2px,
     rgba(61, 61, 61, 0.3) 3px 3px;
 }
