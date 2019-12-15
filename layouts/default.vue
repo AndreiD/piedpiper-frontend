@@ -64,7 +64,7 @@ export default {
   auth: false,
   data() {
     return {
-      title: "𝗙𝗶𝗻𝗱𝗟𝗮𝘆𝗲𝗿.𝗯𝗴",
+      title: "Hackathon...",
       auth: this.$auth,
       isLoggedIn: false
     };
