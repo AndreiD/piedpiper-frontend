@@ -141,8 +141,6 @@ export default {
     this.name = this.$route.params.name;
     this.id = this.$route.params.id;
     this.getMyInfo();
-    this.loadUser(this.id);
-    this.loadChat(this.id);
   },
   computed: {
     mapsIframeURL: function() {
@@ -158,6 +156,7 @@ export default {
         .get("/user/me")
         .then(res => {
           this.myUser = res.data;
+          this.loadUser(this.id);
         })
         .catch(error => {
           console.log(error);
@@ -167,6 +166,7 @@ export default {
     },
     loadChat() {
       this.isLoading = true;
+      let self = this;
       this.$axios
         .get("/user/chats?page=1&limit=100")
         .then(response => {
@@ -177,6 +177,20 @@ export default {
             return;
           }
           this.chats = data;
+
+          //filter by this 2 users (should be done on the server side....)
+          this.chats = this.chats.filter(function(chat) {
+            if (
+              (chat.from_user_id == self.myUser._id &&
+                chat.to_user_id == self.user._id) ||
+              (chat.from_user_id == self.user._id &&
+                chat.to_user_id == self.myUser._id)
+            ) {
+              return true;
+            }
+            return false;
+          });
+
           this.chats = this.chats.reverse();
         })
         .catch(error => {
@@ -197,6 +211,7 @@ export default {
             return;
           }
           this.user = data;
+          this.loadChat(this.id);
         })
         .catch(error => {
           this.isLoading = false;
