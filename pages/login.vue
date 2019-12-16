@@ -26,14 +26,7 @@
             ></v-text-field>
           </v-card-text>
           <v-card-actions>
-            <v-btn
-              min-height="50"
-              block
-              class="primary"
-              :loading="isLoading"
-              type="submit"
-              >Login</v-btn
-            >
+            <v-btn min-height="50" block class="primary" :loading="isLoading" type="submit">Login</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -47,8 +40,8 @@ export default {
   auth: false,
   data() {
     return {
-      password: "test123",
-      email: "test@test.com",
+      password: "",
+      email: "",
       recaptchaToken: "",
       isLoading: false,
       showPassword: false

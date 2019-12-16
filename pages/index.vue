@@ -1,28 +1,5 @@
 <template>
   <section>
-    <v-layout column wrap align-center>
-      <v-flex xs12 sm4>
-        <div class="text-center">
-          <img
-            justify="center"
-            align="center"
-            style="height: 54px;"
-            src="/upstacklogo.png"
-            alt="upstack logo"
-          />
-
-          <span class="display-2" style="font-weight: bold; color:#4891dc; ">Meet-up</span>
-
-          <p class="body">Find upstackers around the world and have fun together</p>
-          <p class="caption">
-            if you get an error google maps can't load, it's not a bug. Someone
-            should put his/her credit card into a google project, whitelist this
-            domain, and we're good...
-          </p>
-        </div>
-      </v-flex>
-    </v-layout>
-
     <div v-if="!isLoading">
       <v-container fluid class="pa-0 ma-0 fill-height">
         <GmapMap
@@ -40,7 +17,16 @@
             :opened="infoWinOpen"
           >
             <p class="title">{{ selectedUser.name }}</p>
-            <p class="subtitle">{{ selectedUser.offers }}</p>
+
+            <img
+              v-if="selectedUser.icon"
+              :src="selectedUser.icon.url"
+              style="width:55px; text-align: center;display:block;
+    margin:auto;"
+              v-bind:alt="selectedUser.name"
+            />
+
+            <p style="margin-top: 10px" class="subtitle">{{ selectedUser.offers }}</p>
 
             <v-btn small block class="secondary" @click="goToUser()">chat</v-btn>
           </GmapInfoWindow>
@@ -51,7 +37,6 @@
             :key="index"
             :position="m.position"
             :clickable="true"
-            :icon="m.icon"
             :draggable="false"
             @click="toggleInfoWindow(m, index)"
           />
@@ -117,9 +102,9 @@ export default {
         .get("/users")
         .then(res => {
           this.users = res.data;
-          console.log("this.users :", this.users);
           this.selectedUser = this.users[0];
           this.users.forEach(user => {
+            console.log("user :", user);
             this.markers.push({
               id: user._id,
               position: {

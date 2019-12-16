@@ -1,94 +1,39 @@
 <template>
   <v-container>
     <section>
-      <v-layout column wrap class="my-12" align-center>
-        <v-flex xs12 sm4 class="my-4">
-          <div class="text-center">
-            <h2 class="display-3">
-              sign
-              <span
-                style="background-color:black; padding: 2px 7px 2px 7px;color:#fff"
-                >UP</span
-              >
-            </h2>
-          </div>
-        </v-flex>
-      </v-layout>
-
       <v-layout align-center justify-center>
         <v-flex xs12 sm8 md6 ma-5 style="max-width:500px">
           <v-form ref="form">
-            <v-text-field
-              v-model="first_name"
-              outlined
-              label="First Name"
-              required
-            ></v-text-field>
+            <v-text-field v-model="first_name" outlined label="First Name" required></v-text-field>
 
-            <v-text-field
-              v-model="last_name"
-              outlined
-              label="Last Name"
-              required
-            ></v-text-field>
+            <v-text-field v-model="last_name" outlined label="Last Name" required></v-text-field>
 
-            <v-text-field
-              v-model="phone"
-              outlined
-              label="Phone"
-              required
-            ></v-text-field>
+            <v-text-field v-model="phone" outlined label="Phone" required></v-text-field>
 
-            <v-text-field
-              outlined
-              v-model="email"
-              label="E-mail"
-              required
-            ></v-text-field>
+            <v-text-field outlined v-model="email" label="E-mail" required></v-text-field>
 
-            <v-text-field
-              outlined
-              v-model="password"
-              type="password"
-              label="Password"
-              required
-            ></v-text-field>
+            <v-text-field outlined v-model="password" type="password" label="Password" required></v-text-field>
 
-            <v-text-field
-              outlined
-              v-model="city"
-              label="City"
-              required
-            ></v-text-field>
+            <v-text-field outlined v-model="city" label="City" required></v-text-field>
 
-            <v-text-field
-              outlined
-              v-model="country"
-              label="Country"
-              required
-            ></v-text-field>
+            <v-text-field outlined v-model="country" label="Country" required></v-text-field>
 
-            <v-text-field
-              outlined
-              v-model="pic_url"
-              label="PIC URL (square works best)"
-            ></v-text-field>
+            <p
+              class="subtitle"
+            >Please make sure that your image url ends up with .jpg .png extension</p>
 
-            <v-btn block class="mt-3 mb-3" outlined @click="locateMe"
-              >Don't Know your lat/lng ? Click ME!</v-btn
-            >
+            <v-text-field outlined v-model="pic_url" label="PIC URL (square works best)"></v-text-field>
 
-            <v-text-field
+            <v-btn
+              block
+              class="mt-3 mb-3"
               outlined
-              v-model="lng"
-              label="Latitude"
-            ></v-text-field>
+              @click="locateMe"
+            >Don't Know your lat/lng ? Click ME!</v-btn>
 
-            <v-text-field
-              outlined
-              v-model="lat"
-              label="Longitude"
-            ></v-text-field>
+            <v-text-field outlined v-model="lng" label="Latitude"></v-text-field>
+
+            <v-text-field outlined v-model="lat" label="Longitude"></v-text-field>
 
             <v-textarea
               outlined
@@ -106,9 +51,7 @@
               label="Offers (ex: drinks, place to sleep etc)"
             ></v-textarea>
 
-            <v-btn :loading="isLoading" color="primary" block @click="signup"
-              >SIGN UP</v-btn
-            >
+            <v-btn :loading="isLoading" color="primary" block @click="signup">SIGN UP</v-btn>
           </v-form>
         </v-flex>
       </v-layout>

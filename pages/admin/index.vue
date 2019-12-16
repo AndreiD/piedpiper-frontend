@@ -26,29 +26,16 @@
                     label="Offers (what you can offer to some other upstacker)"
                   ></v-text-field>
 
-                  <v-text-field
-                    outlined
-                    v-model="mUser.address"
-                    label="Address"
-                  ></v-text-field>
-                  <v-text-field
-                    outlined
-                    v-model="mUser.city"
-                    label="City"
-                  ></v-text-field>
-                  <v-text-field
-                    outlined
-                    v-model="mUser.country"
-                    label="Country"
-                  ></v-text-field>
+                  <v-text-field outlined v-model="mUser.address" label="Address"></v-text-field>
+                  <v-text-field outlined v-model="mUser.city" label="City"></v-text-field>
+                  <v-text-field outlined v-model="mUser.country" label="Country"></v-text-field>
 
                   <v-btn
                     @click="saveDetails()"
                     :elevation="0"
                     color="accent"
                     min-width="220"
-                    >Save Details</v-btn
-                  >
+                  >Save Details</v-btn>
                 </v-container>
               </v-card-text>
             </v-card>
@@ -73,35 +60,30 @@
                   label="Pic URL (best if it's square)"
                 ></v-text-field>
 
+                <p
+                  class="subtitle"
+                >Please make sure that your image url ends up with .jpg .png extension</p>
+
                 <v-btn
                   @click="saveDetails()"
                   :elevation="0"
                   color="accent"
                   min-width="220"
-                  >Change Profile Picture</v-btn
-                >
+                >Change Profile Picture</v-btn>
               </v-card-text>
             </v-card>
           </v-flex>
 
           <v-flex md6>
             <v-card class="pa-5" style="min-height:250px; " outlined>
-              <v-card-title> <v-icon left>map</v-icon>Location </v-card-title>
+              <v-card-title>
+                <v-icon left>map</v-icon>Location
+              </v-card-title>
               <v-card-text>
-                <v-text-field
-                  outlined
-                  v-model="mUser.location.lat"
-                  label="Latitude"
-                ></v-text-field>
-                <v-text-field
-                  outlined
-                  v-model="mUser.location.lng"
-                  label="Longitude"
-                ></v-text-field>
+                <v-text-field outlined v-model="mUser.location.lat" label="Latitude"></v-text-field>
+                <v-text-field outlined v-model="mUser.location.lng" label="Longitude"></v-text-field>
 
-                <v-btn @click="saveDetails()" :elevation="0" color="accent"
-                  >Save Location</v-btn
-                >
+                <v-btn @click="saveDetails()" :elevation="0" color="accent">Save Location</v-btn>
                 <v-btn outlined @click="locateMe">Autofill lat/lng ?</v-btn>
               </v-card-text>
             </v-card>
