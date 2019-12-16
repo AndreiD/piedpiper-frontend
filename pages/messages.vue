@@ -5,6 +5,9 @@
         <v-flex xs12 sm4>
           <h2 class="display-1">
             Inbox
+            <span v-if="isLoading">
+              <v-progress-circular indeterminate color="green"></v-progress-circular>
+            </span>
           </h2>
         </v-flex>
       </v-layout>
@@ -22,12 +25,8 @@
                   </v-list-item-avatar>
 
                   <v-list-item-content>
-                    <v-list-item-title
-                      v-html="chat.message"
-                    ></v-list-item-title>
-                    <v-list-item-subtitle
-                      v-html="timeAgo(chat.created_at)"
-                    ></v-list-item-subtitle>
+                    <v-list-item-title v-html="chat.message"></v-list-item-title>
+                    <v-list-item-subtitle v-html="timeAgo(chat.created_at)"></v-list-item-subtitle>
 
                     <v-divider></v-divider>
                   </v-list-item-content>
@@ -35,13 +34,15 @@
               </template>
             </v-list>
           </div>
-          <div class="text-xs-center justify-center" v-if="chats.length < 1">
-            <v-layout justify-center>
-              <p class="justify-center">
-                you can start by sending someone a message. your chat history
-                will appear here
-              </p>
-            </v-layout>
+          <div v-if="!isLoading">
+            <div class="text-xs-center justify-center" v-if="chats.length < 1">
+              <v-layout justify-center>
+                <p class="justify-center">
+                  you can start by sending someone a message. your chat history
+                  will appear here
+                </p>
+              </v-layout>
+            </div>
           </div>
         </v-col>
       </v-container>
@@ -57,7 +58,7 @@ export default {
     myUser: null,
     name: null,
     id: null,
-    isLoading: false,
+    isLoading: true,
     chats: []
   }),
   mounted() {
@@ -68,6 +69,7 @@ export default {
       this.$axios
         .get("/user/me")
         .then(res => {
+          this.isLoading = true;
           this.myUser = res.data;
           this.loadChat();
           setInterval(function() {
