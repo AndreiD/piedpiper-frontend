@@ -3,26 +3,17 @@
     <v-layout column wrap align-center>
       <v-flex xs12 sm4>
         <div class="text-center">
-          <p class="display-1">
-            <span style="padding: 2px 7px 2px 7px;color:#555">Find an </span>
+          <img
+            justify="center"
+            align="center"
+            style="height: 54px;"
+            src="/upstacklogo.png"
+            alt="upstack logo"
+          />
 
-            <img
-              justify="center"
-              align="center"
-              style="height: 54px;"
-              src="/upstacklogo.png"
-              alt="upstack logo"
-            />
+          <span class="display-2" style="font-weight: bold; color:#4891dc; ">Meet-up</span>
 
-            <span
-              style="background-color:#4891dc; margin-left: -10px; padding: 1px 7px 0px 7px;color:#fff"
-              >er</span
-            >
-            <span style="padding: 2px 7px 2px 7px;color:#555">near me</span>
-          </p>
-          <p class="body">
-            Find upstackers around the world and have fun together
-          </p>
+          <p class="body">Find upstackers around the world and have fun together</p>
           <p class="caption">
             if you get an error google maps can't load, it's not a bug. Someone
             should put his/her credit card into a google project, whitelist this
@@ -51,9 +42,7 @@
             <p class="title">{{ selectedUser.name }}</p>
             <p class="subtitle">{{ selectedUser.offers }}</p>
 
-            <v-btn small block class="secondary" @click="goToUser()"
-              >chat</v-btn
-            >
+            <v-btn small block class="secondary" @click="goToUser()">chat</v-btn>
           </GmapInfoWindow>
 
           <GmapMarker
