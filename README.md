@@ -23,4 +23,4 @@ fell free to create an issue
 
 ## License
 
-:moneybag: PiedPiper Backend is released under the MIT license.
+:moneybag: PiedPiper Frontend is released under the MIT license.
