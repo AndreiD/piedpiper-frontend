@@ -7,20 +7,22 @@
             <v-card outlined>
               <v-list-item three-line>
                 <v-list-item-content>
-                  <div class="overline mb-4">
-                    {{ user.city }} - {{ user.country }}
-                  </div>
-                  <v-list-item-title class="headline mb-1"
-                    >{{ user.first_name }}
-                    {{ user.last_name }}</v-list-item-title
-                  >
-                  <v-list-item-subtitle>{{
+                  <div class="overline mb-4">{{ user.city }} - {{ user.country }}</div>
+                  <v-list-item-title class="headline mb-1">
+                    {{ user.first_name }}
+                    {{ user.last_name }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle>
+                    {{
                     user.paragraph | truncate(2000, "...")
-                  }}</v-list-item-subtitle>
+                    }}
+                  </v-list-item-subtitle>
 
-                  <v-list-item-subtitle class="headline">{{
+                  <v-list-item-subtitle class="headline">
+                    {{
                     user.offers | truncate(2000, "...")
-                  }}</v-list-item-subtitle>
+                    }}
+                  </v-list-item-subtitle>
                 </v-list-item-content>
 
                 <v-list-item-avatar size="256" tile color="grey">
@@ -36,7 +38,8 @@
                 <v-btn
                   @click="showCallDialog = !showCallDialog"
                   :elevation="0"
-                  color="accent"
+                  outlined
+                  style="color: #555"
                   min-width="220"
                 >
                   <v-icon left>mdi-phone</v-icon>call
@@ -48,38 +51,42 @@
           </v-col>
 
           <v-col :cols="12">
-            <v-card v-if="chats" style="min-height:300px" outlined>
+            <v-card v-if="chats" outlined>
               <v-card-text>
                 <template v-for="chat in chats">
-                  <v-list-item
-                    @click="goToUser(chat.from_user_name, chat.to_user_id)"
-                    :key="chat.message"
-                  >
+                  <v-list-item :key="chat.message">
                     <v-list-item-avatar>
                       <v-img :src="chat.from_user_pic"></v-img>
                     </v-list-item-avatar>
 
                     <v-list-item-content>
-                      <v-list-item-title
-                        v-html="chat.message"
-                      ></v-list-item-title>
-                      <v-list-item-subtitle
-                        v-html="timeAgo(chat.created_at)"
-                      ></v-list-item-subtitle>
+                      <v-list-item-title v-html="chat.message"></v-list-item-title>
+                      <v-list-item-subtitle v-html="timeAgo(chat.created_at)"></v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                 </template>
 
-                <v-text-field
-                  outlined
-                  placeholder="Type Your Message"
-                  v-model="message"
-                  ref="message"
-                >
-                </v-text-field>
-                <v-btn class="primary" @click="sendMessage()"
-                  >SEND MESSAGE</v-btn
-                >
+                <v-layout mt-5 mb-5 row wrap>
+                  <v-flex md6>
+                    <v-text-field
+                      outlined
+                      style="min-height:66px"
+                      placeholder="Type Your Message"
+                      v-model="message"
+                      ref="message"
+                    ></v-text-field>
+                  </v-flex>
+                  <v-flex md3>
+                    <v-btn
+                      :elevation="0"
+                      outlined
+                      class="ml-3"
+                      style="color: #555; min-height:56px"
+                      min-width="220"
+                      @click="sendMessage()"
+                    >SEND MESSAGE</v-btn>
+                  </v-flex>
+                </v-layout>
               </v-card-text>
             </v-card>
           </v-col>
@@ -99,16 +106,16 @@
                 You can reach {{ user.first_name }} {{ user.last_name }} via the
                 number below
               </p>
-              <v-btn x-large class="ma-5 primary" @click="openPhone()">{{
+              <v-btn x-large class="ma-5 primary" @click="openPhone()">
+                {{
                 formatPhone(user.phone)
-              }}</v-btn>
+                }}
+              </v-btn>
             </v-card-text>
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" text @click="showCallDialog = false"
-                >CLOSE</v-btn
-              >
+              <v-btn color="primary" text @click="showCallDialog = false">CLOSE</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>

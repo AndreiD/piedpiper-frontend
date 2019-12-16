@@ -28,7 +28,7 @@
 
             <p style="margin-top: 10px" class="subtitle">{{ selectedUser.offers }}</p>
 
-            <v-btn small block class="secondary" @click="goToUser()">chat</v-btn>
+            <v-btn small block outlined style="color: #555" @click="goToUser()">chat</v-btn>
           </GmapInfoWindow>
 
           <GmapMarker

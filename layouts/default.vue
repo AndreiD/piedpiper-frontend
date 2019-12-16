@@ -13,13 +13,18 @@
         </nuxt-link>
       </v-toolbar-title>
       <div class="flex-grow-1"></div>
+      <v-btn @click="goToUrl('/')" class="ma-2" outlined style="min-width: 120px; color: #555">
+        <v-icon left>home</v-icon>home
+      </v-btn>
+
       <v-btn
-        @click="goToUrl('/')"
-        class="ma-2 green white--text"
+        v-if="!isAuthenticated"
+        @click="goToUrl('/login')"
+        class="ma-2"
         outlined
         style="min-width: 120px; color: #555"
       >
-        <v-icon left>home</v-icon>home
+        <v-icon left>person</v-icon>sign in
       </v-btn>
 
       <v-btn
@@ -29,22 +34,13 @@
         outlined
         style="min-width: 120px; color: #555"
       >
-        <v-icon left>account_circle</v-icon>sign up
-      </v-btn>
-      <v-btn
-        v-if="!isAuthenticated"
-        @click="goToUrl('/login')"
-        class="ma-2 primary white--text"
-        outlined
-        style="min-width: 120px; color: #555"
-      >
-        <v-icon left>pets</v-icon>sign in
+        <v-icon left>person_add</v-icon>sign up
       </v-btn>
 
       <v-btn
         v-if="isAuthenticated"
         @click="goToUrl('/messages')"
-        class="ma-2 primary white--text"
+        class="ma-2"
         outlined
         style="min-width: 120px; color: #555"
       >
@@ -54,17 +50,17 @@
       <v-btn
         v-if="isAuthenticated && $route.name != 'admin'"
         @click="goToUrl('/admin')"
-        class="ma-2 primary white--text"
+        class="ma-2"
         outlined
         style="min-width: 120px; color: #555"
       >
-        <v-icon left>face</v-icon>admin
+        <v-icon left>face</v-icon>my account
       </v-btn>
 
       <v-btn
         v-if="isAuthenticated && $route.name == 'admin'"
         @click="goToUrl('/logout')"
-        class="ma-2 primary white--text"
+        class="ma-2"
         outlined
         style="min-width: 120px; color: #555"
       >
